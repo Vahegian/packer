@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, SafeAreaView, ScrollView, View, Image, Text } from 'react-native';
 // react-navigation
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator } from 'react-navigation-stack'
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // importing screens
@@ -15,6 +15,7 @@ import SettingsScreen from './src/components/screens/settingsScreen';
 import AboutScreen from './src/components/screens/aboutScreen';
 import LoginScreen from './src/components/screens/loginScreen';
 import colors from './src/config/colors';
+import StoreScreen from './src/components/screens/storeScreen';
 
 // drawer custom look
 const customDrawer = (props) => (
@@ -44,13 +45,21 @@ const DrawerNavigator = createDrawerNavigator({
       activeTintColor: colors.primaryColor
     } 
   });
+
+const AppStackNavigator = createStackNavigator({
+  drawerNavigator:  {screen: DrawerNavigator, 
+                     navigationOptions: {
+                                          headerShown: false},
+                                        },
+  storeScreen: {screen: StoreScreen},
+});
 // We used createSwitchNavigator because we don't want our user to // navigate back to Splash screen by pressing back button. Hence
 // Splash screen just get seen once by the user.
 const AppSwitchNavigator = createSwitchNavigator(
   {
     Splash: { screen: Splash },
     Login: {screen: LoginScreen},
-    Drawer: { screen: DrawerNavigator },
+    Drawer: { screen: AppStackNavigator },
   },
   {
     initialRouteName: 'Splash',
