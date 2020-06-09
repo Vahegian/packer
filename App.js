@@ -16,7 +16,7 @@ import AboutScreen from './src/components/screens/aboutScreen';
 import LoginScreen from './src/components/screens/loginScreen';
 import colors from './src/config/colors';
 
-// drawer custom looks
+// drawer custom look
 const customDrawer = (props) => (
   <SafeAreaView style={{ flex: 1 }}>
     <View style={{ height: 150, alignItems: "center", justifyContent: "center" }}>
@@ -53,7 +53,7 @@ const AppSwitchNavigator = createSwitchNavigator(
     Drawer: { screen: DrawerNavigator },
   },
   {
-    initialRouteName: 'Splash', // Telling the navigator that the first       // route is Splash screen
+    initialRouteName: 'Splash',
   },
 );
 const App = createAppContainer(AppSwitchNavigator);

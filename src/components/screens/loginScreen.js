@@ -9,13 +9,19 @@ export default class LoginScreen extends Component {
         return (
             <ImageBackground source={require('../../assets/logo.jpg')} style={styles.container} blurRadius={4}>
                 <View style={styles.form}>
-                    <TextInput value={"username"} selectionColor={colors.primaryColor} style={styles.textInput} />
+                    <TextInput placeholder={"username"} selectionColor={colors.primaryColor} style={styles.textInput} />
                     <View style={{flex:0.01}}/>
-                    <TextInput secureTextEntry={true} value={"password"} selectionColor={colors.primaryColor} style={styles.textInput} />
+                    <TextInput secureTextEntry={true} placeholder={"password"} selectionColor={colors.primaryColor} style={styles.textInput} />
                     <View style={{flex:0.05}}/>
                     <View style={{width: '85%', marginLeft: '7.5%'}}>
-                    <Button title={"Login"} style={styles.loginButton} onPress={()=>{
+                    <Button title={"Login"} color={colors.loginGreen} onPress={()=>{
                         this.props.navigation.navigate('Home');
+                    }} ></Button>
+                    </View>
+                    <View style={{flex:0.05}}/>
+                    <View style={{width: '85%', marginLeft: '7.5%'}}>
+                    <Button title={"Register"} color={colors.register} onPress={()=>{
+                        // this.props.navigation.navigate('Home');
                     }} ></Button>
                     </View>
                 </View>
@@ -33,17 +39,18 @@ const styles = StyleSheet.create({
     form: {
         flex: 0.9,
         width: '85%',
-        backgroundColor: 'rgba(255,255,255,.7)',
+        backgroundColor: 'rgba(255,255,255,.0)',
         justifyContent: "center",
         alignContent: "center",
+        borderRadius: 20,
     },
+
     textInput: {
         height: 60,
         // marginTop: 50,
         marginLeft: '7.5%',
         width: '85%',
         backgroundColor: colors.white,
+        borderRadius: 20
     },
-    loginButton: {
-    }
 });

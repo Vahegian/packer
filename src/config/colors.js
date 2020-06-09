@@ -15,5 +15,7 @@ const colors = {
   yps: '#637599',
   ypsLight: '#7B92BF',
   cosmic: '#963D32',
+  loginGreen: '#2a9d8f',
+  register: '#f4a261'
 };
 export default colors;
