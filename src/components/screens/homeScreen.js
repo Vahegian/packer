@@ -40,29 +40,32 @@ export default class HomeScreen extends Component {
 
   getJsonFromFile(file) {
     return fetch(file)
-    .then((response) => response.json())
-    .then((json) => {
-      return json.movies;
-    })
-    .catch((error) => {
-      console.error(error);
+      .then((response) => response.json())
+      .then((json) => {
+        return json.movies;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  updateStore(title, id) {
+    // this.setState()
+    this.props.navigation.navigate('storeScreen', {
+      store: title,
+      storeId: id,
+      categories: storeData.categories[id]
     });
   }
 
-  updateStore(title) {
-    // this.setState()
-    this.props.navigation.navigate('storeScreen', { store: title, 
-                                                    categories: storeData.categories[title] } );
-  }
-
-  Item({ title }) {
+  Item({ title, id }) {
     return (
-      <View style={styles.item}>
-        <TouchableOpacity onPress={() => this.updateStore(title)}>
+      <TouchableOpacity style={styles.item} onPress={() => this.updateStore(title, id)}>
+        {/* <View style={styles.item}> */}
           <IconCE name="store" style={styles.storeIcon} />
           <Text style={styles.title}>{title}</Text>
-        </TouchableOpacity>
-      </View>
+        {/* </View> */}
+      </TouchableOpacity>
     );
   }
 
@@ -74,7 +77,7 @@ export default class HomeScreen extends Component {
           <FlatList
             numColumns={2}
             data={storeData.stores}
-            renderItem={({ item }) => <this.Item title={item.title} />}
+            renderItem={({ item }) => <this.Item title={item.title} id={item.id} />}
             keyExtractor={item => item.id} />
         </View>
       </View>
@@ -93,10 +96,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   item: {
+    // flex: 1,
     backgroundColor: colors.primaryColor,
-    // width: "45%",
+    width: "45%",
     padding: "15%",
-    marginVertical: "10%",
+    marginVertical: "3%",
     marginHorizontal: "2.5%",
     justifyContent: "center",
     alignContent: "center",
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
   },
   storeIcon: {
     fontSize: 48,
-    marginBottom: "10%"
+    marginBottom: "10%",
   },
 });
 

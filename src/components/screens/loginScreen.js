@@ -1,29 +1,41 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, Image, TextInput, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Button, Image, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Fontisto'
 import colors from '../../config/colors';
 
 export default class LoginScreen extends Component {
+
+    constructor(props) {
+        super(props);
+        this.CustButton = this.CustButton.bind(this);
+    }
+
+    CustButton({ name, bgColor }) {
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Drawer')}
+                style={{
+                    flexDirection: "row",
+                    width: '85%', marginLeft: '7.5%',
+                    backgroundColor: bgColor, borderRadius: 20, 
+                    justifyContent: "center", padding: "2%"
+                }}>
+            
+                <Text style={{ fontSize: 20, color: colors.white }}>{name}</Text>
+            </TouchableOpacity>
+        );
+    }
 
     render() {
         return (
             <ImageBackground source={require('../../assets/logo.jpg')} style={styles.container} blurRadius={4}>
                 <View style={styles.form}>
                     <TextInput placeholder={"username"} selectionColor={colors.primaryColor} style={styles.textInput} />
-                    <View style={{flex:0.01}}/>
+                    <View style={{ flex: 0.01 }} />
                     <TextInput secureTextEntry={true} placeholder={"password"} selectionColor={colors.primaryColor} style={styles.textInput} />
-                    <View style={{flex:0.05}}/>
-                    <View style={{width: '85%', marginLeft: '7.5%'}}>
-                    <Button title={"Log in"} color={colors.loginGreen} onPress={()=>{
-                        this.props.navigation.navigate('Drawer');
-                    }} ></Button>
-                    </View>
-                    <View style={{flex:0.05}}/>
-                    <View style={{width: '85%', marginLeft: '7.5%'}}>
-                    <Button title={"Sign up"} color={colors.register} onPress={()=>{
-                        // this.props.navigation.navigate('Home');
-                    }} ></Button>
-                    </View>
+                    <View style={{ flex: 0.05 }} />
+                    <this.CustButton name="Log In" bgColor={colors.login} />
+                    <View style={{ flex: 0.05 }} />
+                    <this.CustButton name="Sign up" bgColor={colors.signup} />
                 </View>
             </ImageBackground>
         );
