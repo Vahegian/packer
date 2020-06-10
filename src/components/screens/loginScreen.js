@@ -14,13 +14,13 @@ export default class LoginScreen extends Component {
                     <TextInput secureTextEntry={true} placeholder={"password"} selectionColor={colors.primaryColor} style={styles.textInput} />
                     <View style={{flex:0.05}}/>
                     <View style={{width: '85%', marginLeft: '7.5%'}}>
-                    <Button title={"Login"} color={colors.loginGreen} onPress={()=>{
+                    <Button title={"Log in"} color={colors.loginGreen} onPress={()=>{
                         this.props.navigation.navigate('Drawer');
                     }} ></Button>
                     </View>
                     <View style={{flex:0.05}}/>
                     <View style={{width: '85%', marginLeft: '7.5%'}}>
-                    <Button title={"Register"} color={colors.register} onPress={()=>{
+                    <Button title={"Sign up"} color={colors.register} onPress={()=>{
                         // this.props.navigation.navigate('Home');
                     }} ></Button>
                     </View>

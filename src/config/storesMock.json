@@ -1,0 +1,174 @@
+{
+    "stores": [
+        {
+            "id": "s1",
+            "title": "Store1"
+        },
+        {
+            "id": "s2",
+            "title": "Store2"
+        },
+        {
+            "id": "s3",
+            "title": "Store3"
+        },
+        {
+            "id": "s4",
+            "title": "Store4"
+        }
+    ],
+    "categories": {
+        "Store1": [
+            {
+                "id": "c1",
+                "title": "Carbonated Beverages"
+            },
+            {
+                "id": "c2",
+                "title": "Milk"
+            },
+            {
+                "id": "c3",
+                "title": "Fresh Bread & Rolls"
+            },
+            {
+                "id": "c4",
+                "title": "Salty Snacks"
+            },
+            {
+                "id": "c5",
+                "title": "Beer/Ale/Alcoholic Cider"
+            },
+            {
+                "id": "c6",
+                "title": "Natural Cheese"
+            },
+            {
+                "id": "c7",
+                "title": "Wine"
+            },
+            {
+                "id": "c8",
+                "title": "Fz Dinners/Entrees"
+            },
+            {
+                "id": "c9",
+                "title": "Cold Cereal"
+            },
+            {
+                "id": "c10",
+                "title": "Cigarettes"
+            },
+            {
+                "id": "c11",
+                "title": "Yogurt"
+            },
+            {
+                "id": "c12",
+                "title": "Rfg Juices/Drinks"
+            },
+            {
+                "id": "c13",
+                "title": "Ice Cream/Sherbet"
+            },
+            {
+                "id": "c14",
+                "title": "Bottled Water"
+            },
+            {
+                "id": "c15",
+                "title": "Soup"
+            },
+            {
+                "id": "c16",
+                "title": "Crackers"
+            },
+            {
+                "id": "c17",
+                "title": "Cookies"
+            },
+            {
+                "id": "c18",
+                "title": "Bottled Juices"
+            },
+            {
+                "id": "c19",
+                "title": "Coffee"
+            },
+            {
+                "id": "c20",
+                "title": "Luncheon Meats"
+            }
+        ],
+        "Store2": [
+            {
+                "id": "c8",
+                "title": "Fz Dinners/Entrees"
+            },
+            {
+                "id": "c9",
+                "title": "Cold Cereal"
+            },
+            {
+                "id": "c10",
+                "title": "Cigarettes"
+            },
+            {
+                "id": "c11",
+                "title": "Yogurt"
+            }
+        ],
+        "Store3": [
+            {
+                "id": "c7",
+                "title": "Wine"
+            },
+            {
+                "id": "c8",
+                "title": "Fz Dinners/Entrees"
+            },
+            {
+                "id": "c9",
+                "title": "Cold Cereal"
+            },
+            {
+                "id": "c10",
+                "title": "Cigarettes"
+            },
+            {
+                "id": "c11",
+                "title": "Yogurt"
+            },
+            {
+                "id": "c12",
+                "title": "Rfg Juices/Drinks"
+            }
+        ],
+        "Store4": [
+            {
+                "id": "c14",
+                "title": "Bottled Water"
+            },
+            {
+                "id": "c15",
+                "title": "Soup"
+            },
+            {
+                "id": "c16",
+                "title": "Crackers"
+            },
+            {
+                "id": "c17",
+                "title": "Cookies"
+            },
+            {
+                "id": "c18",
+                "title": "Bottled Juices"
+            },
+            {
+                "id": "c19",
+                "title": "Coffee"
+            }
+        ]
+    }
+}
