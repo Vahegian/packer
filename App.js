@@ -16,6 +16,7 @@ import AboutScreen from './src/components/screens/aboutScreen';
 import LoginScreen from './src/components/screens/loginScreen';
 import colors from './src/config/colors';
 import StoreScreen from './src/components/screens/storeScreen';
+import CategoryScreen from './src/components/screens/categoryScreen'
 
 // drawer custom look
 const customDrawer = (props) => (
@@ -52,6 +53,7 @@ const AppStackNavigator = createStackNavigator({
                                           headerShown: false},
                                         },
   storeScreen: {screen: StoreScreen},
+  categoryScreen: {screen: CategoryScreen},
 });
 // We used createSwitchNavigator because we don't want our user to // navigate back to Splash screen by pressing back button. Hence
 // Splash screen just get seen once by the user.

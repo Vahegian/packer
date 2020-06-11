@@ -11,6 +11,8 @@ const colors = {
   white: '#FFFFFF',
   cosmic: '#963D32',
   login: '#2a9d8f',
-  signup: '#f4a261'
+  signup: '#f4a261',
+  star: '#FAB401',
+  time: '#a4c3b2'
 };
 export default colors;
