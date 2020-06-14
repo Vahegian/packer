@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, Image, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Button, Image, TextInput, ImageBackground, TouchableOpacity, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Fontisto'
 import colors from '../../config/colors';
 
@@ -12,7 +12,7 @@ export default class LoginScreen extends Component {
 
     CustButton({ name, bgColor }) {
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Drawer')}
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('UserMode')}
                 style={{
                     flexDirection: "row",
                     width: '85%', marginLeft: '7.5%',
@@ -27,7 +27,9 @@ export default class LoginScreen extends Component {
 
     render() {
         return (
-            <ImageBackground source={require('../../assets/logo.jpg')} style={styles.container} blurRadius={4}>
+            <>
+            <StatusBar backgroundColor={colors.primaryColor}></StatusBar>
+            <ImageBackground source={require('../../assets/logo.jpg')} style={styles.container} blurRadius={8}>
                 <View style={styles.form}>
                     <TextInput placeholder={"username"} selectionColor={colors.primaryColor} style={styles.textInput} />
                     <View style={{ flex: 0.01 }} />
@@ -38,6 +40,7 @@ export default class LoginScreen extends Component {
                     <this.CustButton name="Sign up" bgColor={colors.signup} />
                 </View>
             </ImageBackground>
+            </>
         );
     }
 }
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
         // marginTop: 50,
         marginLeft: '7.5%',
         width: '85%',
-        backgroundColor: colors.white,
+        backgroundColor: colors.transparentWhite,
         borderRadius: 20
     },
 });

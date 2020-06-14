@@ -16,7 +16,8 @@ import AboutScreen from './src/components/screens/aboutScreen';
 import LoginScreen from './src/components/screens/loginScreen';
 import colors from './src/config/colors';
 import StoreScreen from './src/components/screens/storeScreen';
-import CategoryScreen from './src/components/screens/categoryScreen'
+import CategoryScreen from './src/components/screens/categoryScreen';
+import UserModeScreen from './src/components/screens/userModeScreen';
 
 // drawer custom look
 const customDrawer = (props) => (
@@ -35,7 +36,7 @@ const customDrawer = (props) => (
 // This navigator makes the drawer
 const DrawerNavigator = createDrawerNavigator({
   Home: HomeScreen,
-  Orders: OrdersScreen,
+  ActiveOrders: OrdersScreen,
   Account: AccountScreen,
   Settings: SettingsScreen,
   About: AboutScreen
@@ -61,6 +62,7 @@ const AppSwitchNavigator = createSwitchNavigator(
   {
     Splash: { screen: Splash },
     Login: {screen: LoginScreen},
+    UserMode: {screen: UserModeScreen},
     Drawer: { screen: AppStackNavigator },
   },
   {

@@ -31,8 +31,10 @@ class CategoryScreen extends Component {
     Item({ product }) {
         return (
             <View style={styles.item}>
+                <TouchableOpacity onPress={()=>{alert("More Information about the product: "+product.title)}}>
                 <Image source={product.image ? { uri: product.image } : require('../../assets/logo.jpg')} style={styles.itemImage} />
-                <View style={{ flexDirection: "column" }} >
+                </TouchableOpacity>
+                <View style={{ flexDirection: "column", width: "42%" }} >
                     <Text style={styles.textPname}>{product.title}</Text>
 
                     <StarRating
@@ -51,13 +53,14 @@ class CategoryScreen extends Component {
                     <Text style={styles.textPprice}>{product.price}</Text>
                     <Text style={styles.textPtime}>Delivery in {product.deliveryTime} minutes</Text>
                 </View>
-                <View style={{ flexDirection: "column", justifyContent: "center", alignItems:"center", marginLeft: "20%"}} >
-                    <TouchableOpacity>
+
+                <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", marginLeft: "20%" }} >
+                    <TouchableOpacity onPress={()=>{alert(product.title+": ADDED TO BASKET")}}>
                         <Icon name="md-cart" style={{ fontSize: 28 }} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{marginTop: "10%"}}>
+                    {/* <TouchableOpacity style={{ marginTop: "10%" }}>
                         <Text style={styles.textPname}>Details</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         );
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
 
     item: {
         flexDirection: "row",
-        backgroundColor: colors.primaryColor,
+        // backgroundColor: colors.primaryColor,
         width: "90%",
         marginLeft: "5%",
         // height: "20%",
@@ -123,22 +126,28 @@ const styles = StyleSheet.create({
         // justifyContent: "center",
         // alignContent: "center",
         borderRadius: 25,
+        backgroundColor: colors.transparentWhite,
+        borderColor: colors.primaryColor,
+        borderWidth: 2
     },
 
     textPname: {
         fontSize: 18,
-        color: colors.white,
+        // width: "90%"
+        // color: colors.white,
     },
 
     textPprice: {
         fontSize: 14,
-        color: colors.white,
+        // width: "90%"
+        // color: colors.white,
     },
 
     textPtime: {
         marginTop: "3%",
         fontSize: 12,
         color: colors.time,
+        // width: "100%"
     },
 
     itemImage: {

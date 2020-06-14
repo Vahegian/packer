@@ -15,6 +15,22 @@
         {
             "id": "s4",
             "title": "Store4"
+        },
+        {
+            "id": "s5",
+            "title": "Store5"
+        },
+        {
+            "id": "s6",
+            "title": "Store6"
+        },
+        {
+            "id": "s7",
+            "title": "Store7"
+        },
+        {
+            "id": "s8",
+            "title": "Store8"
         }
     ],
     "categories": {

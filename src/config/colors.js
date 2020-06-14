@@ -13,6 +13,7 @@ const colors = {
   login: '#2a9d8f',
   signup: '#f4a261',
   star: '#FAB401',
-  time: '#a4c3b2'
+  time: '#a4c3b2',
+  transparentWhite: 'rgba(255,255,255,0.8)' 
 };
 export default colors;

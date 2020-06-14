@@ -73,13 +73,14 @@ export default class HomeScreen extends Component {
     return (
       <View style={styles.container}>
         <PackerHeader {...this.props}></PackerHeader>
-        <View style={styles.storeListView}>
+        {/* <View style={styles.storeListView}> */}
           <FlatList
             numColumns={2}
             data={storeData.stores}
             renderItem={({ item }) => <this.Item title={item.title} id={item.id} />}
-            keyExtractor={item => item.id} />
-        </View>
+            keyExtractor={item => item.id}
+            contentContainerStyle={{justifyContent:"center", alignItems: "center"}} />
+        {/* </View> */}
       </View>
     );
   }
@@ -88,7 +89,8 @@ export default class HomeScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    // backgroundColor: colors.transparentWhite,
   },
   storeListView: {
     flex: 1,
@@ -97,18 +99,22 @@ const styles = StyleSheet.create({
   },
   item: {
     // flex: 1,
-    backgroundColor: colors.primaryColor,
+    // borderBottomColor: colors.primaryColor,
+    flexDirection: "column",
     width: "45%",
-    padding: "15%",
+    padding: "10%",
     marginVertical: "3%",
     marginHorizontal: "2.5%",
     justifyContent: "center",
-    alignContent: "center",
+    alignItems: "center",
     borderRadius: 25,
+    backgroundColor: colors.transparentWhite,
+    borderColor: colors.primaryColor,
+    borderWidth: 2
   },
   title: {
     fontSize: 18,
-    color: colors.white,
+    // color: colors.white,
   },
   storeIcon: {
     fontSize: 48,

@@ -20,7 +20,7 @@ export default class Splash extends Component {
   render() {
     return (
       <>
-      <StatusBar style={{backgroundColor: colors.primaryColor}}></StatusBar>
+      <StatusBar backgroundColor={colors.primaryColor}></StatusBar>
       <View style={styles.container}>
         <Image style={styles.logo} source={require('../assets/logo.jpg')} />
       </View>

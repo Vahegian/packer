@@ -7,16 +7,17 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class OrdersScreen extends Component {
     static navigationOptions = {
+        drawerLabel: "Open Orders",
         drawerIcon: ({ tintColor }) => (
             <Icon name="md-book" style={{ color: tintColor, fontSize: 24 }} />
-        )
+        ),
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <PackerHeader {...this.props}></PackerHeader>
-                <Text style={{ fontSize: 25, marginBottom: 20 }}>Orders SCREEN</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20 }}>Open Orders SCREEN</Text>
             </View>
         );
     }
