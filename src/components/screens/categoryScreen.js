@@ -95,7 +95,7 @@ class CategoryScreen extends Component {
             <View>
                 <PackerHeader go_back={true} {...this.props}></PackerHeader>
                 <View style={styles.store_title_container}>
-                    <Text style={styles.title}> {this.state.store} >  </Text>
+                    <Text style={styles.title}> {this.state.store} </Text>
                     <Image source={{ uri: this.state.categoryImage }} style={{ width: 20, height: 20 }} />
                     <Text style={styles.title}> {this.state.category}</Text>
                 </View>

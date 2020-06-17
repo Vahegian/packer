@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react
 import PackerHeader from '../header';
 import SqlStorage from '../logic/sqlStorage';
 import colors from '../../config/colors';
+import Symbols from '../../config/symbols'
 
 // to be used in development only
 import storeData from '../../config/storesMock.json'
@@ -16,89 +17,72 @@ class CartScreen extends Component {
     constructor(props) {
         super(props);
         this.asyncStorage = new SqlStorage();
-
-        // this.asyncStorage.storeData("d1", [1, 2, 3]);
-        // this.getData("d1").then( async (data)=>{data.push(9); await this.storeData("d1", data); console.log(data)});
-        // this.asyncStorage.addData("d1", 9).then(async ()=>{
-        //     let data = await this.asyncStorage.getData("d1");
-        //     console.log("MM", data);
-        //     alert(data);
-        // });
-        this.items = null;
         this.itemComponents = [];
-
-        this.asyncStorage.getData("cart").then((data) => {
-            // console.log("cart", data);
-            // alert(data);
-
-            this.items = data;
-            this.setState({ rx: 1 });
-            console.log("ss", this.items);
-            for (const skey in this.items) {
-                // console.log("II", store)
-                let items = [];
-                for (const ckey in this.items[skey]) {
-                    for (const pkey in this.items[skey][ckey]) {
-                        items.push({ category: ckey, product: pkey, qty: this.items[skey][ckey][pkey] })
-                    }
-                }
-                this.itemComponents.push({ store: skey, items: items })
-            }
-            this.refresh()
-        });
-        // console.log("ZZ", this.itemComponents);
+        this.getCartContent();
         this.Item = this.Item.bind(this);
         this.CartItem = this.CartItem.bind(this);
+        this.prices = {}
     }
+
+
 
     async clearCart() {
         await this.asyncStorage.removeValue("cart");
-        this.refresh()
+        this.getCartContent()
+        // this.refresh()
     }
 
-    refresh() { this.setState({ rx: !this.state.rx }) }
+    // UI functions 
 
-    printT(T) { console.log("T", T) }
-
-    findItemArray(array, key, value){
-        return array.find(x => x[key] === value)
-    }
-
-    CartItem({ sid, cid, pid, qty }){
-        let storeObj = this.findItemArray(storeData.stores, "id", sid);
+    CartItem({ sid, cid, pid, qty }) {
         let categoryObj = this.findItemArray(storeData.categories[sid], "id", cid);
         let productObj = this.findItemArray(storeData.products[sid][cid], "id", pid);
-        return(
-            <View style={{flexDirection: "row"}}>
+        let totalQtyPrice = qty * productObj.price;
+        this.prices[sid] ? this.prices[sid] += totalQtyPrice : this.prices[sid] = totalQtyPrice;
+        // console.log(this.prices)
+        return (
+            <View style={{ flexDirection: "row", marginTop: "3%", alignItems: "center" }}>
                 {/* <Image source={{uri:storeData.products.s1.c1}} /> */}
-                <Text>{storeObj.title}</Text>
-                <Text>{categoryObj.title}</Text> 
-                <Text>{productObj.title}</Text>
-                <Text>{"QTY: "+qty}</Text>
-                <TouchableOpacity>
-                    <Text>Remove</Text>
-                </TouchableOpacity>    
+                {/* <Text>{}</Text> */}
+                {/* <Text>{categoryObj.title}</Text> */}
+                <Image source={{ uri: productObj.image }} style={styles.itemImage} />
+                <View style={{ flex: 0.5, flexDirection: "column" }}>
+                    <Text style={{ fontSize: 18 }} >{productObj.title}</Text>
+                    <Text style={{ fontSize: 14 }}>{"qty: " + qty}</Text>
+                    <Text style={{ fontSize: 14 }}>{Symbols.euro + totalQtyPrice}</Text>
+                </View>
+
+                <TouchableOpacity style={{ flex: 0.2 }}>
+                    <Text style={{ color: colors.red }} >Remove</Text>
+                </TouchableOpacity>
             </View>
         )
     }
 
     Item({ data }) {
+        let storeObj = this.findItemArray(storeData.stores, "id", data.store);
+        this.prices = {};
         return (
-            //   <TouchableOpacity style={styles.item} onPress={() => this.updateCategory(title, image, id)}>
-            //     <Text>{items.product}</Text>
-            //   </TouchableOpacity>
-            <View style={styles.item}>
-                <Text style={styles.cartItemStoreText}>{data.store}</Text>
-                <View style={styles.storeProducts}>
-                    {
-                        data.items.map((i) => {
-                            return (<this.CartItem key={data.store+i.category+i.product+i.qty} 
-                                                   sid={data.store} 
-                                                   cid={i.category} 
-                                                   pid={i.product} 
-                                                   qty={i.qty} />);
-                        })
-                    }
+            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                <View style={styles.item}>
+                    <Text style={styles.cartItemStoreText}>{"Orders from " + storeObj.title}</Text>
+                    <View style={styles.storeProducts}>
+                        {
+                            data.items.map((i) => {
+                                return (<this.CartItem key={data.store + i.category + i.product + i.qty}
+                                    sid={data.store}
+                                    cid={i.category}
+                                    pid={i.product}
+                                    qty={i.qty} />);
+                            })
+                        }
+                    </View>
+                    <Text>{"Total: " + this.prices[data.store]}</Text>
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%" }} >
+                        <TouchableOpacity style={{ backgroundColor: colors.yellow, padding: "2%", borderRadius: 10 }} >
+                            <Text style={{ fontSize: 18, color: colors.white }}>Request Delivery</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
@@ -108,7 +92,20 @@ class CartScreen extends Component {
         return (
             <View>
                 <PackerHeader go_back={true} {...this.props}></PackerHeader>
-                <TouchableOpacity onPress={async () => { await this.clearCart() }}><Text>Clear</Text></TouchableOpacity>
+                <TouchableOpacity onPress={async () => { await this.clearCart() }}
+                    style={{
+                        backgroundColor: colors.red,
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                    <Text style={{
+                        color: colors.white,
+                        fontSize: 16
+                    }}>
+                        Clear Cart
+                    </Text>
+                </TouchableOpacity>
                 {this.itemComponents.length > 0 ?
                     <FlatList
                         // numColumns={1}
@@ -116,10 +113,49 @@ class CartScreen extends Component {
                         renderItem={({ item }) => <this.Item data={item} />}
                         keyExtractor={item => item.store}
                         contentContainerStyle={styles.storeListView}
+                        extraData={this.props}
                     />
-                    : <Text>NO Items</Text>}
+                    :
+                    <View style={{ flexDirection: "column", height: "90%",justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ fontSize: 24 }} >Cart is empty </Text>
+                    </View>
+                }
             </View>
         );
+    }
+
+    // Logic Functions
+
+    getCartContent() {
+        this.asyncStorage.getData("cart").then((data) => {
+            // console.log(data)
+            this.itemComponents = []
+            for (const skey in data) {
+                let items = [];
+                for (const ckey in data[skey]) {
+                    for (const pkey in data[skey][ckey]) {
+                        items.push({ category: ckey, product: pkey, qty: data[skey][ckey][pkey] })
+                    }
+                }
+                this.itemComponents.push({ store: skey, items: items })
+            }
+            this.refresh()
+        });
+    }
+
+    refresh() {
+        try {
+            console.log(this.state.rx)
+            this.setState({ rx: !this.state.rx })
+        } catch{
+            this.setState({ rx: true })
+        }
+    }
+
+    printT(T) { console.log("T", T) }
+
+    findItemArray(array, key, value) {
+        return array.find(x => x[key] === value)
     }
 }
 
@@ -131,19 +167,21 @@ const styles = StyleSheet.create({
     },
 
     storeListView: {
-        // // flex: 1,
         flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
+        justifyContent: "center",
+        // alignItems: "center",
         paddingBottom: 100,
-        // width: "95%"
+        // width: "100%",
+        // backgroundColor: colors.cosmic,
+        // alignSelf: 'stretch',
         // height: "100%"
     },
 
     item: {
         flexDirection: "column",
         // backgroundColor: colors.primaryColor,
-        width: "95%",
+        width: "98%",
+        // alignSelf: 'stretch',
         // height: "20%",
         padding: "5%",
         marginVertical: "2%",
@@ -156,22 +194,29 @@ const styles = StyleSheet.create({
         borderWidth: 2
     },
 
-    storeProducts: { 
-        flexDirection: "column", 
-        justifyContent: "center", 
-        alignItems: "center" },
-
-    itemImage: {
-        width: 50,
-        height: 50,
-        marginRight: "10%",
-        borderRadius: 20
+    storeProducts: {
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        // backgroundColor: colors.login
     },
 
     cartItemStoreText: {
+        // flex: 1,
+        // flexDirection: "row",
         fontSize: 20,
-        color: colors.primaryColor
-    }
+        color: colors.primaryColor,
+        // backgroundColor: colors.signup,
+        // width: '100%'
+    },
+
+    itemImage: {
+        flex: 0.3,
+        width: 80,
+        height: 80,
+        marginRight: "5%",
+        borderRadius: 20
+    },
 
 });
 
