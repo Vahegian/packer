@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react
 import colors from '../../config/colors';
 import PackerHeader from '../header';
 import StarRating from 'react-native-star-rating';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
+import SqlStorage from '../logic/sqlStorage';
 
 // to be used in development only
 import storeData from '../../config/storesMock.json'
@@ -15,6 +16,7 @@ class CategoryScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.sql = new SqlStorage();
         this.state = this.props.navigation.state.params;
         this.products = storeData.products[this.state.storeId][this.state.categoryId];
         this.Item = this.Item.bind(this);
@@ -28,11 +30,33 @@ class CategoryScreen extends Component {
     //     }    
     // }
 
+    async addItemsToCart(itemId, qty) {
+        let data = await this.sql.getData("cart");
+  
+        if (data === null) data = {} 
+
+        try{
+            if (data[this.state.storeId][this.state.categoryId][itemId]!=null){
+                data[this.state.storeId][this.state.categoryId][itemId]+=qty;
+            }
+            else{
+                data[this.state.storeId][this.state.categoryId][itemId]=qty;
+            }
+        }catch{
+            let t2 = {}; t2[itemId]=qty;
+            let t1 = {}; t1[this.state.categoryId]=t2;
+            data[this.state.storeId]=t1;          
+        }
+        
+        await this.sql.storeData("cart", data);
+        
+    }
+
     Item({ product }) {
         return (
             <View style={styles.item}>
-                <TouchableOpacity onPress={()=>{alert("More Information about the product: "+product.title)}}>
-                <Image source={product.image ? { uri: product.image } : require('../../assets/logo.jpg')} style={styles.itemImage} />
+                <TouchableOpacity onPress={() => { product.title = "Pressed"; this.setState({ refresh: 1 }) }}>
+                    <Image source={product.image ? { uri: product.image } : require('../../assets/logo.jpg')} style={styles.itemImage} />
                 </TouchableOpacity>
                 <View style={{ flexDirection: "column", width: "42%" }} >
                     <Text style={styles.textPname}>{product.title}</Text>
@@ -55,7 +79,7 @@ class CategoryScreen extends Component {
                 </View>
 
                 <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", marginLeft: "20%" }} >
-                    <TouchableOpacity onPress={()=>{alert(product.title+": ADDED TO BASKET")}}>
+                    <TouchableOpacity onPress={async () => { await this.addItemsToCart(product.id, 1); alert(product.title + ": ADDED TO BASKET") }}>
                         <Icon name="md-cart" style={{ fontSize: 28 }} />
                     </TouchableOpacity>
                     {/* <TouchableOpacity style={{ marginTop: "10%" }}>

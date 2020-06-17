@@ -30,8 +30,7 @@ export default class PackerHeader extends Component {
             </TouchableOpacity>
           </Body>
           <Right>
-            <TouchableOpacity>
-
+            <TouchableOpacity onPress={()=>{this.props.navigation.navigate('cartScreen')}} >
               <Icon name="md-cart" style={{ fontSize: 28 }} />
             </TouchableOpacity>
           </Right>

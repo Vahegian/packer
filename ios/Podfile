@@ -89,6 +89,8 @@ target 'rntpackerr' do
 
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'rntpackerrTests' do
     inherit! :complete
     # Pods for testing
