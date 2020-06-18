@@ -5,9 +5,11 @@ import PackerHeader from '../header';
 import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SqlStorage from '../logic/sqlStorage';
+import Helpers from '../logic/helpers'
 
 // to be used in development only
 import storeData from '../../config/storesMock.json'
+import Symbols from '../../config/symbols';
 
 class CategoryScreen extends Component {
     static navigationOptions = {
@@ -16,6 +18,7 @@ class CategoryScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.helpers = new Helpers();
         this.sql = new SqlStorage();
         this.state = this.props.navigation.state.params;
         this.products = storeData.products[this.state.storeId][this.state.categoryId];
@@ -32,20 +35,29 @@ class CategoryScreen extends Component {
 
     async addItemsToCart(itemId, qty) {
         let data = await this.sql.getData("cart");
-  
+        let productObj = this.helpers.findItemArray(storeData.products[this.state.storeId][this.state.categoryId], "id", itemId);
+        let totalQtyPrice = qty * productObj.price;
+
         if (data === null) data = {} 
 
         try{
             if (data[this.state.storeId][this.state.categoryId][itemId]!=null){
-                data[this.state.storeId][this.state.categoryId][itemId]+=qty;
-            }
-            else{
-                data[this.state.storeId][this.state.categoryId][itemId]=qty;
-            }
+                let prevQty = data[this.state.storeId][this.state.categoryId][itemId].qty
+                qty = qty+prevQty
+                totalQtyPrice = qty * productObj.price; 
+            } 
+                
+            data[this.state.storeId][this.state.categoryId][itemId]={qty:qty, price: totalQtyPrice};
+
+            // if (data[this.state.storeId].storeTotal != null)
+            //     data[this.state.storeId].storeTotal += totalQtyPrice
+            // else data[this.state.storeId].storeTotal = totalQtyPrice
+
         }catch{
-            let t2 = {}; t2[itemId]=qty;
+            let t2 = {}; t2[itemId]={qty:qty, price: totalQtyPrice};
             let t1 = {}; t1[this.state.categoryId]=t2;
-            data[this.state.storeId]=t1;          
+            data[this.state.storeId]=t1;
+            // data[this.state.storeId].storeTotal = totalQtyPrice          
         }
         
         await this.sql.storeData("cart", data);
@@ -74,7 +86,7 @@ class CategoryScreen extends Component {
                         starSize={16}
                     />
 
-                    <Text style={styles.textPprice}>{product.price}</Text>
+                    <Text style={styles.textPprice}>{Symbols.euro+product.price.toFixed(2)}</Text>
                     <Text style={styles.textPtime}>Delivery in {product.deliveryTime} minutes</Text>
                 </View>
 

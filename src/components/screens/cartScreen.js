@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react
 import PackerHeader from '../header';
 import SqlStorage from '../logic/sqlStorage';
 import colors from '../../config/colors';
-import Symbols from '../../config/symbols'
+import Symbols from '../../config/symbols';
+import Helpers from '../logic/helpers'
 
 // to be used in development only
 import storeData from '../../config/storesMock.json'
 
+const FEE = 3.60;
 
 class CartScreen extends Component {
     static navigationOptions = {
@@ -16,12 +18,13 @@ class CartScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.helpers = new Helpers();
         this.asyncStorage = new SqlStorage();
         this.itemComponents = [];
         this.getCartContent();
         this.Item = this.Item.bind(this);
         this.CartItem = this.CartItem.bind(this);
-        this.prices = {}
+        // this.prices = {}
     }
 
 
@@ -34,54 +37,72 @@ class CartScreen extends Component {
 
     // UI functions 
 
-    CartItem({ sid, cid, pid, qty }) {
-        let categoryObj = this.findItemArray(storeData.categories[sid], "id", cid);
-        let productObj = this.findItemArray(storeData.products[sid][cid], "id", pid);
-        let totalQtyPrice = qty * productObj.price;
-        this.prices[sid] ? this.prices[sid] += totalQtyPrice : this.prices[sid] = totalQtyPrice;
+    createOrderButton(storeItems) {
+        let sTotal = this.getTotalPrice(storeItems);
+
+        return (
+            <TouchableOpacity onPress={() => { this.refresh() }} 
+                                style={{ flexDirection: "column", 
+                                backgroundColor: colors.transparentWhite,
+                                borderColor: colors.primaryColor,
+                                borderWidth: 2, 
+                                padding: "2%", 
+                                borderRadius: 10, 
+                                alignItems: "center", 
+                                width: "90%" }}>
+                <Text style={{ fontSize: 18, color: colors.green}}>{"Total: " + Symbols.euro + (FEE + sTotal).toFixed(2)}</Text>
+                <Text style={{ fontSize: 14, marginTop:"2%", color:colors.red }}>{"Store total: " + Symbols.euro + sTotal.toFixed(2)}</Text>
+                <Text style={{ fontSize: 14, color:colors.red }}>{"Delivery fee: " + Symbols.euro + FEE.toFixed(2)}</Text>
+                <Text style={{ fontSize: 24, color: colors.primaryColor }}>Request Delivery</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    CartItem({ sid, cid, pid, qty, price }) {
+        let categoryObj = this.helpers.findItemArray(storeData.categories[sid], "id", cid);
+        let productObj = this.helpers.findItemArray(storeData.products[sid][cid], "id", pid);
+        // let totalQtyPrice = qty * productObj.price;
+        // this.prices[sid] ? this.prices[sid] += totalQtyPrice : this.prices[sid] = totalQtyPrice;
         // console.log(this.prices)
         return (
             <View style={{ flexDirection: "row", marginTop: "3%", alignItems: "center" }}>
-                {/* <Image source={{uri:storeData.products.s1.c1}} /> */}
-                {/* <Text>{}</Text> */}
-                {/* <Text>{categoryObj.title}</Text> */}
                 <Image source={{ uri: productObj.image }} style={styles.itemImage} />
                 <View style={{ flex: 0.5, flexDirection: "column" }}>
                     <Text style={{ fontSize: 18 }} >{productObj.title}</Text>
-                    <Text style={{ fontSize: 14 }}>{"qty: " + qty}</Text>
-                    <Text style={{ fontSize: 14 }}>{Symbols.euro + totalQtyPrice}</Text>
+                    <Text style={{ fontSize: 14 }}>{"qty: " + qty.toFixed(2)}</Text>
+                    <Text style={{ fontSize: 14 }}>{Symbols.euro + price.toFixed(2)}</Text>
                 </View>
 
-                <TouchableOpacity style={{ flex: 0.2 }}>
+                <TouchableOpacity style={{ flex: 0.2 }} onPress={() => { this.removeItem(sid, cid, pid) }}>
                     <Text style={{ color: colors.red }} >Remove</Text>
                 </TouchableOpacity>
             </View>
         )
     }
 
-    Item({ data }) {
-        let storeObj = this.findItemArray(storeData.stores, "id", data.store);
-        this.prices = {};
+    Item({ store }) {
+        let storeObj = this.helpers.findItemArray(storeData.stores, "id", store.store);
+        // let showTotal = false;
         return (
             <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                 <View style={styles.item}>
                     <Text style={styles.cartItemStoreText}>{"Orders from " + storeObj.title}</Text>
                     <View style={styles.storeProducts}>
                         {
-                            data.items.map((i) => {
-                                return (<this.CartItem key={data.store + i.category + i.product + i.qty}
-                                    sid={data.store}
+                            store.items.map((i) => {
+                                return (<this.CartItem key={store.store + i.category + i.product + i.qty}
+                                    sid={store.store}
                                     cid={i.category}
                                     pid={i.product}
-                                    qty={i.qty} />);
+                                    qty={i.qty}
+                                    price={i.price} />
+                                );
                             })
+
                         }
                     </View>
-                    <Text>{"Total: " + this.prices[data.store]}</Text>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%" }} >
-                        <TouchableOpacity style={{ backgroundColor: colors.yellow, padding: "2%", borderRadius: 10 }} >
-                            <Text style={{ fontSize: 18, color: colors.white }}>Request Delivery</Text>
-                        </TouchableOpacity>
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "5%" }} >
+                            {this.createOrderButton(store.items)}
                     </View>
                 </View>
             </View>
@@ -89,6 +110,7 @@ class CartScreen extends Component {
     }
 
     render() {
+        // this.prices = {};
         return (
             <View>
                 <PackerHeader go_back={true} {...this.props}></PackerHeader>
@@ -110,14 +132,14 @@ class CartScreen extends Component {
                     <FlatList
                         // numColumns={1}
                         data={this.itemComponents}
-                        renderItem={({ item }) => <this.Item data={item} />}
+                        renderItem={({ item }) => <this.Item store={item} />}
                         keyExtractor={item => item.store}
                         contentContainerStyle={styles.storeListView}
                         extraData={this.props}
                     />
                     :
-                    <View style={{ flexDirection: "column", height: "90%",justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ fontSize: 24 }} >Cart is empty </Text>
+                    <View style={{ flexDirection: "column", height: "90%", justifyContent: "center", alignItems: "center" }}>
+                        <Text style={{ fontSize: 24 }} >Cart is empty </Text>
                     </View>
                 }
             </View>
@@ -125,6 +147,14 @@ class CartScreen extends Component {
     }
 
     // Logic Functions
+
+    getTotalPrice(items) {
+        let total = 0;
+        for (let p of items) {
+            total += p.price
+        }
+        return total
+    }
 
     getCartContent() {
         this.asyncStorage.getData("cart").then((data) => {
@@ -134,13 +164,27 @@ class CartScreen extends Component {
                 let items = [];
                 for (const ckey in data[skey]) {
                     for (const pkey in data[skey][ckey]) {
-                        items.push({ category: ckey, product: pkey, qty: data[skey][ckey][pkey] })
+                        items.push({
+                            category: ckey,
+                            product: pkey,
+                            qty: data[skey][ckey][pkey].qty,
+                            price: data[skey][ckey][pkey].price
+                        })
                     }
                 }
                 this.itemComponents.push({ store: skey, items: items })
             }
             this.refresh()
         });
+    }
+
+    removeItem(sid, cid, pid) {
+        this.asyncStorage.getData("cart").then(async (data) => {
+            delete data[sid][cid][pid];
+            await this.asyncStorage.storeData("cart", data);
+            this.getCartContent()
+            this.refresh();
+        })
     }
 
     refresh() {
@@ -154,9 +198,7 @@ class CartScreen extends Component {
 
     printT(T) { console.log("T", T) }
 
-    findItemArray(array, key, value) {
-        return array.find(x => x[key] === value)
-    }
+
 }
 
 const styles = StyleSheet.create({

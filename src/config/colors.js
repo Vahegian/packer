@@ -16,6 +16,7 @@ const colors = {
   time: '#a4c3b2',
   transparentWhite: 'rgba(255,255,255,0.8)',
   red: '#e63946',
-  yellow: '#ffd166' 
+  yellow: '#ffd166',
+  green: '#2b9348' 
 };
 export default colors;
