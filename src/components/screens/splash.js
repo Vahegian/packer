@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
-import colors from '../config/colors';
+import colors from '../../config/colors';
 
 export default class Splash extends Component {
   async componentDidMount() {
@@ -22,7 +22,7 @@ export default class Splash extends Component {
       <>
       <StatusBar backgroundColor={colors.primaryColor}></StatusBar>
       <View style={styles.container}>
-        <Image style={styles.logo} source={require('../assets/logo.jpg')} />
+        <Image style={styles.logo} source={require('../../assets/logo.jpg')} />
       </View>
       </>
     );

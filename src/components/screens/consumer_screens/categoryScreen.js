@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
-import colors from '../../config/colors';
-import PackerHeader from '../header';
+import colors from '../../../config/colors';
+import PackerHeader from '../../header';
 import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/Ionicons';
-import SqlStorage from '../logic/sqlStorage';
-import Helpers from '../logic/helpers'
+import SqlStorage from '../../logic/sqlStorage';
+import Helpers from '../../logic/helpers'
 
 // to be used in development only
-import storeData from '../../config/storesMock.json'
-import Symbols from '../../config/symbols';
+import storeData from '../../../config/storesMock.json'
+import Symbols from '../../../config/symbols';
 
 class CategoryScreen extends Component {
     static navigationOptions = {
@@ -68,7 +68,7 @@ class CategoryScreen extends Component {
         return (
             <View style={styles.item}>
                 <TouchableOpacity onPress={() => { product.title = "Pressed"; this.setState({ refresh: 1 }) }}>
-                    <Image source={product.image ? { uri: product.image } : require('../../assets/logo.jpg')} style={styles.itemImage} />
+                    <Image source={product.image ? { uri: product.image } : require('../../../assets/logo.jpg')} style={styles.itemImage} />
                 </TouchableOpacity>
                 <View style={{ flexDirection: "column", width: "42%" }} >
                     <Text style={styles.textPname}>{product.title}</Text>

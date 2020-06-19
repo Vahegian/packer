@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, Image, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base'
-import colors from '../../config/colors';
-import PackerHeader from '../header';
+import colors from '../../../../config/colors';
+import PackerHeader from '../../../../components/header'
 import IconCE from 'react-native-vector-icons/FontAwesome5'
 
 // to be used in development only
-import storeData from '../../config/storesMock.json'
+import storeData from '../../../../config/storesMock.json'
 
 export default class HomeScreen extends Component {
   static navigationOptions = {
@@ -19,20 +19,6 @@ export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
 
-    // this.storeData = {
-    //   stores: [{ id: 1, title: "Store1" },
-    //   { id: 2, title: "Store2" },
-    //   { id: 3, title: "Store3" },
-    //   { id: 4, title: "Store4" }],
-    //   categories: {
-    //     Store1: ["fruits", "vegetables"],
-    //     Store2: ["wine", "Cookies"],
-    //     Store3: ["Spices", "bread"],
-    //     Store4: ["fruits", "Snacks"],
-    //   }
-    // };
-    // console.log(this.getJsonFromFile("../config/storesMock.json"))
-    // this.storeData = this.getJsonFromFile("../config/storesMock.json", true)
     this.state = { store: null, categories: null };
     // this.updateStore = this.updateStore.bind(this);
     this.Item = this.Item.bind(this);

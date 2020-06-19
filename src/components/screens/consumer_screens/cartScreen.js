@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import PackerHeader from '../header';
-import SqlStorage from '../logic/sqlStorage';
-import colors from '../../config/colors';
-import Symbols from '../../config/symbols';
-import Helpers from '../logic/helpers'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView } from 'react-native';
+import PackerHeader from '../../header';
+import SqlStorage from '../../logic/sqlStorage';
+import colors from '../../../config/colors';
+import Symbols from '../../../config/symbols';
+import Helpers from '../../logic/helpers'
 
 // to be used in development only
-import storeData from '../../config/storesMock.json'
+import storeData from '../../../config/storesMock.json'
 
 const FEE = 3.60;
 
@@ -21,6 +21,7 @@ class CartScreen extends Component {
         this.helpers = new Helpers();
         this.asyncStorage = new SqlStorage();
         this.itemComponents = [];
+        // this.clearCart()
         this.getCartContent();
         this.Item = this.Item.bind(this);
         this.CartItem = this.CartItem.bind(this);
@@ -41,18 +42,20 @@ class CartScreen extends Component {
         let sTotal = this.getTotalPrice(storeItems);
 
         return (
-            <TouchableOpacity onPress={() => { this.refresh() }} 
-                                style={{ flexDirection: "column", 
-                                backgroundColor: colors.transparentWhite,
-                                borderColor: colors.primaryColor,
-                                borderWidth: 2, 
-                                padding: "2%", 
-                                borderRadius: 10, 
-                                alignItems: "center", 
-                                width: "90%" }}>
-                <Text style={{ fontSize: 18, color: colors.green}}>{"Total: " + Symbols.euro + (FEE + sTotal).toFixed(2)}</Text>
-                <Text style={{ fontSize: 14, marginTop:"2%", color:colors.red }}>{"Store total: " + Symbols.euro + sTotal.toFixed(2)}</Text>
-                <Text style={{ fontSize: 14, color:colors.red }}>{"Delivery fee: " + Symbols.euro + FEE.toFixed(2)}</Text>
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen')}}
+                style={{
+                    flexDirection: "column",
+                    backgroundColor: colors.transparentWhite,
+                    borderColor: colors.primaryColor,
+                    borderWidth: 2,
+                    padding: "2%",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    width: "90%"
+                }}>
+                <Text style={{ fontSize: 18, color: colors.green }}>{"Total: " + Symbols.euro + (FEE + sTotal).toFixed(2)}</Text>
+                <Text style={{ fontSize: 14, marginTop: "2%", color: colors.red }}>{"Store total: " + Symbols.euro + sTotal.toFixed(2)}</Text>
+                <Text style={{ fontSize: 14, color: colors.red }}>{"Delivery fee: " + Symbols.euro + FEE.toFixed(2)}</Text>
                 <Text style={{ fontSize: 24, color: colors.primaryColor }}>Request Delivery</Text>
             </TouchableOpacity>
         )
@@ -81,54 +84,62 @@ class CartScreen extends Component {
     }
 
     Item({ store }) {
-        let storeObj = this.helpers.findItemArray(storeData.stores, "id", store.store);
+        let storeObj = (store.store === "clearButton" ? false: this.helpers.findItemArray(storeData.stores, "id", store.store));
         // let showTotal = false;
         return (
             <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                <View style={styles.item}>
-                    <Text style={styles.cartItemStoreText}>{"Orders from " + storeObj.title}</Text>
-                    <View style={styles.storeProducts}>
-                        {
-                            store.items.map((i) => {
-                                return (<this.CartItem key={store.store + i.category + i.product + i.qty}
-                                    sid={store.store}
-                                    cid={i.category}
-                                    pid={i.product}
-                                    qty={i.qty}
-                                    price={i.price} />
-                                );
-                            })
+                { storeObj?
+                    <View style={styles.item}>
+                        <Text style={styles.cartItemStoreText}>{"Orders from " + storeObj.title}</Text>
+                        <View style={styles.storeProducts}>
+                            {
+                                store.items.map((i) => {
+                                    return (<this.CartItem key={store.store + i.category + i.product + i.qty}
+                                        sid={store.store}
+                                        cid={i.category}
+                                        pid={i.product}
+                                        qty={i.qty}
+                                        price={i.price} />
+                                    );
+                                })
 
-                        }
-                    </View>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "5%" }} >
+                            }
+                        </View>
+                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "5%" }} >
                             {this.createOrderButton(store.items)}
+                        </View>
                     </View>
-                </View>
+                    :
+                    <TouchableOpacity onPress={async () => { await this.clearCart() }}
+                        style={{
+                            backgroundColor: colors.red,
+                            width: "95%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 25,
+                            padding: "2%",
+                            marginTop: 10
+                        }}>
+                        <Text style={{
+                            color: colors.white,
+                            fontSize: 16
+                        }}>
+                            Clear Cart
+                    </Text>
+                    </TouchableOpacity>
+                }
             </View>
         );
     }
 
     render() {
         // this.prices = {};
+        this.itemComponents.push({store:"clearButton"})
         return (
             <View>
                 <PackerHeader go_back={true} {...this.props}></PackerHeader>
-                <TouchableOpacity onPress={async () => { await this.clearCart() }}
-                    style={{
-                        backgroundColor: colors.red,
-                        width: "100%",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}>
-                    <Text style={{
-                        color: colors.white,
-                        fontSize: 16
-                    }}>
-                        Clear Cart
-                    </Text>
-                </TouchableOpacity>
-                {this.itemComponents.length > 0 ?
+
+                {this.itemComponents.length > 1 ?
                     <FlatList
                         // numColumns={1}
                         data={this.itemComponents}

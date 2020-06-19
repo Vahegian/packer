@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView, Image } from 'react-native';
-import PackerHeader from '../header';
-import colors from '../../config/colors';
+import PackerHeader from '../../header';
+import colors from '../../../config/colors';
 
 const ITEM_TEXT_LIMIT = 10;
 
@@ -30,7 +30,7 @@ class StoreScreen extends Component {
   Item({ title, image, id }) {
     return (
       <TouchableOpacity style={styles.item} onPress={() => this.updateCategory(title, image, id)}>
-        <Image source={image ? { uri: image } : require('../../assets/logo.jpg')} style={styles.itemImage} />
+        <Image source={image ? { uri: image } : require('../../../assets/logo.jpg')} style={styles.itemImage} />
         <Text style={styles.ctitle}>{(title.length > ITEM_TEXT_LIMIT) ? (title.substring(0, ITEM_TEXT_LIMIT - 3)) + '...' : title}</Text>
       </TouchableOpacity>
     );

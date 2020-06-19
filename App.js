@@ -7,18 +7,19 @@ import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // importing screens
 // import Home from './src/components/drawer/home';
-import Splash from './src/components/splash';
-import HomeScreen from './src/components/screens/homeScreen'
-import OrdersScreen from './src/components/screens/ordersScreen';
-import AccountScreen from './src/components/screens/accountScreen';
-import SettingsScreen from './src/components/screens/settingsScreen';
-import AboutScreen from './src/components/screens/aboutScreen';
+import Splash from './src/components/screens/splash';
+import HomeScreen from './src/components/screens/consumer_screens/drawer_screens/homeScreen'
+import OrdersScreen from './src/components/screens/consumer_screens/drawer_screens/ordersScreen';
+import AccountScreen from './src/components/screens/consumer_screens/drawer_screens/accountScreen';
+import SettingsScreen from './src/components/screens/consumer_screens/drawer_screens/settingsScreen';
+import AboutScreen from './src/components/screens/consumer_screens/drawer_screens/aboutScreen';
 import LoginScreen from './src/components/screens/loginScreen';
 import colors from './src/config/colors';
-import StoreScreen from './src/components/screens/storeScreen';
-import CategoryScreen from './src/components/screens/categoryScreen';
+import StoreScreen from './src/components/screens/consumer_screens/storeScreen';
+import CategoryScreen from './src/components/screens/consumer_screens/categoryScreen';
 import UserModeScreen from './src/components/screens/userModeScreen';
-import CartScreen from './src/components/screens/cartScreen'
+import CartScreen from './src/components/screens/consumer_screens/cartScreen';
+import BankScreen from './src/components/screens/consumer_screens/bankScreen';
 
 // drawer custom look
 const customDrawer = (props) => (
@@ -57,6 +58,7 @@ const AppStackNavigator = createStackNavigator({
   storeScreen: {screen: StoreScreen},
   categoryScreen: {screen: CategoryScreen},
   cartScreen: {screen: CartScreen},
+  bankScreen: {screen: BankScreen}
 });
 // We used createSwitchNavigator because we don't want our user to // navigate back to Splash screen by pressing back button. Hence
 // Splash screen just get seen once by the user.

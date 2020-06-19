@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, Image, StatusBar } from 'react-native';
 import { Header, Left, Right, Body } from 'native-base'
-import PackerHeader from '../header'
+import PackerHeader from '../../../../components/header'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 

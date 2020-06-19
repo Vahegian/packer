@@ -18,8 +18,8 @@ export default class PackerHeader extends Component {
         <Header style={{ backgroundColor: colors.primaryColor }} androidStatusBarColor={colors.primaryColor}>
           <Left>
             {this.allow_go_back
-              ? <Icon name="md-arrow-back" style={{ fontSize: 28 }} onPress={() => this.props.navigation.goBack()} />
-              : <Icon name="md-menu" style={{ fontSize: 28 }} onPress={() => this.props.navigation.openDrawer()} />
+              ? <Icon name="md-arrow-back" style={{ fontSize: 28, color:colors.white }} onPress={() => this.props.navigation.goBack()} />
+              : <Icon name="md-menu" style={{ fontSize: 28, color:colors.white }} onPress={() => this.props.navigation.openDrawer()} />
             }
           </Left>
           <Body>
@@ -31,7 +31,7 @@ export default class PackerHeader extends Component {
           </Body>
           <Right>
             <TouchableOpacity onPress={()=>{this.props.navigation.navigate('cartScreen')}} >
-              <Icon name="md-cart" style={{ fontSize: 28 }} />
+              <Icon name="md-cart" style={{ fontSize: 28, color:colors.white }} />
             </TouchableOpacity>
           </Right>
         </Header>
