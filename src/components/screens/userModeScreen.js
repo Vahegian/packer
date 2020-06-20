@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
 import colors from '../../config/colors';
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import ImgResources from "../../config/imgResources"
 
 
 class UserModeScreen extends Component {
@@ -15,7 +16,7 @@ class UserModeScreen extends Component {
     return (
       <>
         <StatusBar backgroundColor={colors.primaryColor}></StatusBar>
-        <ImageBackground source={require('../../assets/logo.jpg')} style={styles.container} blurRadius={8}>
+        <ImageBackground source={ImgResources.mainLogo} style={styles.container} blurRadius={8}>
             <View style={styles.touchWrapper}>
             <TouchableOpacity style={styles.touchStyle} onPress={() => this.props.navigation.navigate('')}>
               <Icon name="truck" style={{ fontSize: 76 }}/>

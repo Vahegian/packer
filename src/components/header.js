@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Button, Image, StatusBar, TouchableOpacity } fr
 import { Header, Left, Right, Body } from 'native-base'
 import colors from '../config/colors';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
+import ImgResources from '../config/imgResources'
 
 export default class PackerHeader extends Component {
 
@@ -26,7 +27,7 @@ export default class PackerHeader extends Component {
             <TouchableOpacity onPress={() => { this.props.navigation.navigate('drawerNavigator') }} >
               <Image
                 style={{ width: 50, height: 50 }}
-                source={require('../assets/logo.jpg')} />
+                source={ImgResources.mainLogo} />
             </TouchableOpacity>
           </Body>
           <Right>

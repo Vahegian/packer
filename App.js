@@ -20,12 +20,14 @@ import CategoryScreen from './src/components/screens/consumer_screens/categorySc
 import UserModeScreen from './src/components/screens/userModeScreen';
 import CartScreen from './src/components/screens/consumer_screens/cartScreen';
 import BankScreen from './src/components/screens/consumer_screens/bankScreen';
+import ImgResources from './src/config/imgResources';
+
 
 // drawer custom look
 const customDrawer = (props) => (
   <SafeAreaView style={{ flex: 1 }}>
     <View style={{ height: 150, alignItems: "center", justifyContent: "center" }}>
-      <Image source={require('./src/assets/logo.jpg')} style={{ height: 100, width: 100, borderRadius: 60 }}></Image>
+      <Image source={ImgResources.mainLogo} style={{ height: 100, width: 100, borderRadius: 60 }}></Image>
     </View>
     <View style={{height:50,  alignItems: "center", justifyContent: "center"}}>
       <Text>User Name</Text>

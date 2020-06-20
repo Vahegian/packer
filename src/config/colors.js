@@ -3,6 +3,7 @@
  */
 const colors = {
   primaryColor: '#004aad',
+  primaryLight: 'rgba(0,74,173,0.2)',
   black: '#000000',
   night: '#333333',
   charcoal: '#474747',

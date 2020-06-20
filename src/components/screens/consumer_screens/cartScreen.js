@@ -40,9 +40,10 @@ class CartScreen extends Component {
 
     createOrderButton(storeItems) {
         let sTotal = this.getTotalPrice(storeItems);
+        let totalWithFee = FEE+sTotal;
 
         return (
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen')}}
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen', {totalPay:totalWithFee})}}
                 style={{
                     flexDirection: "column",
                     backgroundColor: colors.transparentWhite,
@@ -53,7 +54,7 @@ class CartScreen extends Component {
                     alignItems: "center",
                     width: "90%"
                 }}>
-                <Text style={{ fontSize: 18, color: colors.green }}>{"Total: " + Symbols.euro + (FEE + sTotal).toFixed(2)}</Text>
+                <Text style={{ fontSize: 18, color: colors.green }}>{"Total: " + Symbols.euro + totalWithFee.toFixed(2)}</Text>
                 <Text style={{ fontSize: 14, marginTop: "2%", color: colors.red }}>{"Store total: " + Symbols.euro + sTotal.toFixed(2)}</Text>
                 <Text style={{ fontSize: 14, color: colors.red }}>{"Delivery fee: " + Symbols.euro + FEE.toFixed(2)}</Text>
                 <Text style={{ fontSize: 24, color: colors.primaryColor }}>Request Delivery</Text>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, Image, TextInput, ImageBackground, TouchableOpacity, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Fontisto'
 import colors from '../../config/colors';
+import ImgResources from '../../config/imgResources'
 
 export default class LoginScreen extends Component {
 
@@ -29,7 +30,7 @@ export default class LoginScreen extends Component {
         return (
             <>
             <StatusBar backgroundColor={colors.primaryColor}></StatusBar>
-            <ImageBackground source={require('../../assets/logo.jpg')} style={styles.container} blurRadius={8}>
+            <ImageBackground source={ImgResources.mainLogo} style={styles.container} blurRadius={8}>
                 <View style={styles.form}>
                     <TextInput placeholder={"username"} selectionColor={colors.primaryColor} style={styles.textInput} />
                     <View style={{ flex: 0.01 }} />
