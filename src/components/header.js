@@ -24,7 +24,7 @@ export default class PackerHeader extends Component {
             }
           </Left>
           <Body>
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('drawerNavigator') }} >
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('Home') }} >
               <Image
                 style={{ width: 50, height: 50 }}
                 source={ImgResources.mainLogo} />

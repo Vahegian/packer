@@ -15,7 +15,7 @@ const colors = {
   signup: '#f4a261',
   star: '#FAB401',
   time: '#a4c3b2',
-  transparentWhite: 'rgba(255,255,255,0.8)',
+  transparentWhite: 'rgba(255,255,255,0.9)',
   red: '#e63946',
   yellow: '#ffd166',
   green: '#2b9348' 
