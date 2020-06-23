@@ -91,6 +91,8 @@ target 'rntpackerr' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
   target 'rntpackerrTests' do
     inherit! :complete
     # Pods for testing
