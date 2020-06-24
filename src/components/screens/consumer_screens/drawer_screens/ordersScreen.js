@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import colors from '../../../../config/colors';
+import ImgResources from '../../../../config/imgResources'
 
 export default class OrdersScreen extends Component {
     static navigationOptions = {
@@ -18,10 +19,15 @@ export default class OrdersScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.orderInfo = this.props.navigation.state.params;
+        console.log("OO", this.orderInfo);
         this.state = { pos: {latitude: 37.78825, longitude: -122.4324}, 
                        testStorePose: {latitude: 48.2082, longitude: 16.3712}, permission: false };
-        this.requestLocationPermission().then(() => { console.log("Finish Loc") })
+        this.requestLocationPermission().then(() => { this.getCurrentLocation() })
 
+    }
+
+    getCurrentLocation(){
         Geolocation.getCurrentPosition(
             (pos) => {
                 console.log(pos.coords)
@@ -29,6 +35,7 @@ export default class OrdersScreen extends Component {
             },
             (error) => {
                 // See error code charts below.
+                alert("can't get your geolocation consider enabling location services ")
                 console.log(error.code, error.message);
             },
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
@@ -70,8 +77,8 @@ export default class OrdersScreen extends Component {
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
                         initialRegion={{
-                            latitude: this.state.pos.latitude,
-                            longitude: this.state.pos.longitude,
+                            latitude: this.state.testStorePose.latitude,
+                            longitude: this.state.testStorePose.longitude,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}
@@ -85,6 +92,7 @@ export default class OrdersScreen extends Component {
                             coordinate={this.state.testStorePose}
                             title="Store location"
                             pinColor={colors.star}
+                            image={ImgResources.mapPinImg}
                         ></Marker>
                     </MapView>
                     <Text>{this.state.permission ? "granted" : "Not granted"}</Text>

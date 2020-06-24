@@ -38,12 +38,12 @@ class CartScreen extends Component {
 
     // UI functions 
 
-    createOrderButton(storeItems) {
-        let sTotal = this.getTotalPrice(storeItems);
+    createOrderButton(storeName, store) {
+        let sTotal = this.getTotalPrice(store.items);
         let totalWithFee = FEE+sTotal;
 
         return (
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen', {totalPay:totalWithFee})}}
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen', {totalPay:totalWithFee, store:{title: storeName, items: store.items}})}}
                 style={{
                     flexDirection: "column",
                     backgroundColor: colors.transparentWhite,
@@ -63,7 +63,7 @@ class CartScreen extends Component {
     }
 
     CartItem({ sid, cid, pid, qty, price }) {
-        let categoryObj = this.helpers.findItemArray(storeData.categories[sid], "id", cid);
+        // let categoryObj = this.helpers.findItemArray(storeData.categories[sid], "id", cid);
         let productObj = this.helpers.findItemArray(storeData.products[sid][cid], "id", pid);
         // let totalQtyPrice = qty * productObj.price;
         // this.prices[sid] ? this.prices[sid] += totalQtyPrice : this.prices[sid] = totalQtyPrice;
@@ -85,7 +85,7 @@ class CartScreen extends Component {
     }
 
     Item({ store }) {
-        let storeObj = (store.store === "clearButton" ? false: this.helpers.findItemArray(storeData.stores, "id", store.store));
+        let storeObj = (store.storeID === "clearButton" ? false: this.helpers.findItemArray(storeData.stores, "id", store.storeID));
         // let showTotal = false;
         return (
             <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
@@ -95,8 +95,8 @@ class CartScreen extends Component {
                         <View style={styles.storeProducts}>
                             {
                                 store.items.map((i) => {
-                                    return (<this.CartItem key={store.store + i.category + i.product + i.qty}
-                                        sid={store.store}
+                                    return (<this.CartItem key={store.storeID + i.category + i.product + i.qty}
+                                        sid={store.storeID}
                                         cid={i.category}
                                         pid={i.product}
                                         qty={i.qty}
@@ -107,7 +107,7 @@ class CartScreen extends Component {
                             }
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "5%" }} >
-                            {this.createOrderButton(store.items)}
+                            {this.createOrderButton(storeObj.title, store)}
                         </View>
                     </View>
                     :
@@ -135,7 +135,7 @@ class CartScreen extends Component {
 
     render() {
         // this.prices = {};
-        this.itemComponents.push({store:"clearButton"})
+        this.itemComponents.push({storeID:"clearButton"})
         return (
             <View>
                 <PackerHeader go_back={true} {...this.props}></PackerHeader>
@@ -145,7 +145,7 @@ class CartScreen extends Component {
                         // numColumns={1}
                         data={this.itemComponents}
                         renderItem={({ item }) => <this.Item store={item} />}
-                        keyExtractor={item => item.store}
+                        keyExtractor={item => item.storeID}
                         contentContainerStyle={styles.storeListView}
                         extraData={this.props}
                     />
@@ -184,7 +184,8 @@ class CartScreen extends Component {
                         })
                     }
                 }
-                this.itemComponents.push({ store: skey, items: items })
+                if (items.length===0) continue
+                this.itemComponents.push({ storeID: skey, items: items })
             }
             this.refresh()
         });

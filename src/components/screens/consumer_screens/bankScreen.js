@@ -12,15 +12,15 @@ class BankScreen extends Component {
     }
     constructor(props) {
         super(props);
-        this.totalToPay = this.props.navigation.state.params.totalPay
+        this.orderInfo = this.props.navigation.state.params
         this._onChange = this._onChange.bind(this);
         this.state = { canContinue: false, showConfirmationDialog: false };
         this.bankDetails = null;
     }
 
-    continueWithOrder(cardData, totalPay) {
-        console.log(cardData, totalPay);
-        this.props.navigation.navigate('ActiveOrders');
+    continueWithOrder(cardData, orderInfo) {
+        console.log("will complete payments here");
+        this.props.navigation.navigate('ActiveOrders', orderInfo);
     }
 
     areDetailsValid(form) {
@@ -92,10 +92,11 @@ class BankScreen extends Component {
                                     <Text style={styles.modalText}>Card Type: {this.bankDetails.type.toUpperCase()}</Text>
                                     <Text style={styles.modalText}>Number: {this._getHidenCardNumber(this.bankDetails.number)}</Text>
                                     <Text style={styles.modalText}>Your Name: {this.bankDetails.name}</Text>
-                                    <Text style={styles.modalText}>Payment Amount: {Symbols.euro + parseFloat(this.totalToPay).toFixed(2)}</Text>
+                                    <Text style={styles.modalText}>Store: {this.orderInfo.store.title}</Text>
+                                    <Text style={styles.modalText}>Payment Amount: {Symbols.euro + parseFloat(this.orderInfo.totalPay).toFixed(2)}</Text>
                                 </View>
                                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                    <TouchableOpacity onPress={() => { this.continueWithOrder(this.bankDetails, this.totalToPay) }}
+                                    <TouchableOpacity onPress={() => { this.continueWithOrder(this.bankDetails, this.orderInfo) }}
                                         style={styles.modalButton}>
                                         <Text style={{ color: colors.white }}>Pay</Text>
                                     </TouchableOpacity>
