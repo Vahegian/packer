@@ -21,9 +21,13 @@ class SqlStorage {
     addData = async (key, value) => {
         try {
             let data = await this.getData(key);
-            data.push(value);
+            if (data != null){
+                data.push(value);
+                await this.storeData(key, data);
+            }else{
             // console.log("add", data);
-            await this.storeData(key, data);
+                await this.storeData(key, [value]);
+            }
             // let nd = await this.getData("d1")
 
             // const jsonValue = JSON.stringify(value)

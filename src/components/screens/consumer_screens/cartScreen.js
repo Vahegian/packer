@@ -43,7 +43,7 @@ class CartScreen extends Component {
         let totalWithFee = FEE+sTotal;
 
         return (
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen', {totalPay:totalWithFee, store:{title: storeName, items: store.items}})}}
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen', {totalPay:totalWithFee, store:{title: storeName, items: store.items, storeID:store.storeID}})}}
                 style={{
                     flexDirection: "column",
                     backgroundColor: colors.transparentWhite,

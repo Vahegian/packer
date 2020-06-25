@@ -2,7 +2,8 @@
     "stores": [
         {
             "id": "s1",
-            "title": "Store1"
+            "title": "Store1",
+            "location": {"latitude": 48.2206, "longitude": 16.3727}
         },
         {
             "id": "s2",
@@ -10,7 +11,8 @@
         },
         {
             "id": "s3",
-            "title": "Store3"
+            "title": "Store3",
+            "location": {"latitude": 48.2082, "longitude": 16.3712}
         },
         {
             "id": "s4",
