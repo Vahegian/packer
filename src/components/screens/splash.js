@@ -2,21 +2,16 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
 import colors from '../../config/colors';
 import ImgResources from '../../config/imgResources'
+import Helpers from '../logic/helpers';
 
 export default class Splash extends Component {
   async componentDidMount() {
-    // You can load api data or any other thing here if you want
-    const data = await this.navigateToLogin();
-    // if (data !== null) {
-    //   this.props.navigation.navigate('Login');
-    // }
-  }
 
-  navigateToLogin = async () => {
-    // Splash screen will remain visible for 2 seconds
-    const wait = time => new Promise(resolve => setTimeout(resolve, time));
-    return wait(2000).then(() => this.props.navigation.navigate('Login'));
-  };
+    let helpers = new Helpers();
+    await helpers.wait(2000);
+    this.props.navigation.navigate('Login');
+
+  }
 
   render() {
     return (

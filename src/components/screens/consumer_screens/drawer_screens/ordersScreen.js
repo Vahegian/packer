@@ -86,23 +86,23 @@ export default class OrdersScreen extends Component {
             <>
                 {/* <Text>{this.state.permission ? "granted" : "Not granted"}</Text> */}
                 <View style={styles.orderModal}>
-                    <TouchableOpacity onPress={()=>{this.sql.removeValue("openOrders").then(()=>{this.setState({userOrders: null})})}}
-                                        style={{padding: "2%", borderColor: colors.red, 
-                                                borderWidth:1, borderRadius:25, marginBottom:10}}
+                    <TouchableOpacity onPress={() => { this.sql.removeValue("openOrders").then(() => { this.setState({ userOrders: null }) }) }}
+                        style={{
+                            padding: "2%", borderColor: colors.red,
+                            borderWidth: 1, borderRadius: 25, marginBottom: 10
+                        }}
                     >
-                        <Text style={{color:colors.red, fontSize:14}}>Cancel all orders</Text>
+                        <Text style={{ color: colors.red, fontSize: 14 }}>Cancel all orders</Text>
                     </TouchableOpacity>
-                    
-                    {/* <Overlay isvisible={true}  > */}
-                        <FlatList
-                            // numColumns={1}
-                            data={this.state.userOrders}
-                            renderItem={({ item }) => <this.Item data={item} />}
-                            keyExtractor={item => item.store.storeID+item.totalPrice}
-                            contentContainerStyle={styles.storeListView}
-                            extraData={this.props}
-                        />
-                    {/* </Overlay> */}
+
+                    <FlatList
+                        // numColumns={1}
+                        data={this.state.userOrders}
+                        renderItem={({ item }) => <this.Item data={item} />}
+                        keyExtractor={item => item.store.storeID + item.totalPrice}
+                        contentContainerStyle={styles.storeListView}
+                        extraData={this.props}
+                    />
                 </View>
             </>
         )
@@ -202,7 +202,7 @@ export default class OrdersScreen extends Component {
     getCurrentLocation() {
         Geolocation.getCurrentPosition(
             (pos) => {
-                console.log("AA",pos.coords)
+                console.log("AA", pos.coords)
                 this.setState({ pos: pos.coords })
             },
             (error) => {
@@ -210,7 +210,7 @@ export default class OrdersScreen extends Component {
                 alert("can't get your geolocation consider enabling location services ")
                 console.log(error.code, error.message);
             },
-            { enableHighAccuracy: false, timeout: 30000, maximumAge: 20000 }
+            { enableHighAccuracy: true, timeout: 30000, maximumAge: 20000 }
         );
     }
 
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         // alignItems: "center",
-        paddingBottom: 100,
+        paddingBottom: 10,
         width: "100%"
     },
 
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         height: "35%",
         width: "90%",
-        borderRadius: 25,
+        borderRadius: 15,
         bottom: "10%",
         backgroundColor: colors.veryTransparentWhite,
     }

@@ -8,10 +8,11 @@ import SqlStorage from '../../logic/sqlStorage';
 import Helpers from '../../logic/helpers';
 import ImgResources from '../../../config/imgResources'
 import Symbols from '../../../config/symbols';
+import Swipeable from 'react-native-swipeable';
+import Toast from 'react-native-simple-toast';
 
 // to be used in development only
 import storeData from '../../../config/storesMock.json'
-
 
 class CategoryScreen extends Component {
     static navigationOptions = {
@@ -22,8 +23,9 @@ class CategoryScreen extends Component {
         super(props);
         this.helpers = new Helpers();
         this.sql = new SqlStorage();
-        this.state = this.props.navigation.state.params;
-        this.products = storeData.products[this.state.storeId][this.state.categoryId];
+        this.state = {itemAdding:''}
+        this.store = this.props.navigation.state.params;
+        this.products = storeData.products[this.store.storeId][this.store.categoryId];
         this.Item = this.Item.bind(this);
     }
 
@@ -37,70 +39,75 @@ class CategoryScreen extends Component {
 
     async addItemsToCart(itemId, qty) {
         let data = await this.sql.getData("cart");
-        let productObj = this.helpers.findItemArray(storeData.products[this.state.storeId][this.state.categoryId], "id", itemId);
+        let productObj = this.helpers.findItemArray(storeData.products[this.store.storeId][this.store.categoryId], "id", itemId);
         let totalQtyPrice = qty * productObj.price;
 
-        if (data === null) data = {} 
+        if (data === null) data = {}
 
-        try{
-            if (data[this.state.storeId][this.state.categoryId][itemId]!=null){
-                let prevQty = data[this.state.storeId][this.state.categoryId][itemId].qty
-                qty = qty+prevQty
-                totalQtyPrice = qty * productObj.price; 
-            } 
-                
-            data[this.state.storeId][this.state.categoryId][itemId]={qty:qty, price: totalQtyPrice};
+        try {
+            if (data[this.store.storeId][this.store.categoryId][itemId] != null) {
+                let prevQty = data[this.store.storeId][this.store.categoryId][itemId].qty
+                qty = qty + prevQty
+                totalQtyPrice = qty * productObj.price;
+            }
 
-            // if (data[this.state.storeId].storeTotal != null)
-            //     data[this.state.storeId].storeTotal += totalQtyPrice
-            // else data[this.state.storeId].storeTotal = totalQtyPrice
+            data[this.store.storeId][this.store.categoryId][itemId] = { qty: qty, price: totalQtyPrice };
 
-        }catch{
-            let t2 = {}; t2[itemId]={qty:qty, price: totalQtyPrice};
-            let t1 = {}; t1[this.state.categoryId]=t2;
-            data[this.state.storeId]=t1;
-            // data[this.state.storeId].storeTotal = totalQtyPrice          
+        } catch{
+            let t2 = {}; t2[itemId] = { qty: qty, price: totalQtyPrice };
+            let t1 = {}; t1[this.store.categoryId] = t2;
+            data[this.store.storeId] = t1;
         }
-        
+
         await this.sql.storeData("cart", data);
-        
+
     }
 
     Item({ product }) {
+        const leftContent = <View style={{ backgroundColor: colors.green, }}></View>;
+        
         return (
-            <View style={styles.item}>
-                <TouchableOpacity onPress={() => { product.title = "Pressed"; this.setState({ refresh: 1 }) }}>
-                    <Image source={product.image ? { uri: product.image } : ImgResources.mainLogo} style={styles.itemImage} />
-                </TouchableOpacity>
-                <View style={{ flexDirection: "column", width: "42%" }} >
-                    <Text style={styles.textPname}>{product.title}</Text>
+            <Swipeable leftContent={leftContent} 
+                        onLeftActionActivate={async () => { await this.addItemsToCart(product.id, 1);
+                                                        this.setState({itemAdding: product.id})}} 
+                        onLeftActionDeactivate={async () => { await this.helpers.wait(100);
+                                                        this.setState({itemAdding: ''}); 
+                                                        Toast.show("Added "+product.title)}} >
 
-                    <StarRating
-                        disabled={false}
-                        emptyStar={'ios-star-outline'}
-                        fullStar={'ios-star'}
-                        halfStar={'ios-star-half'}
-                        iconSet={'Ionicons'}
-                        maxStars={5}
-                        rating={product.starCount}
-                        // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                        fullStarColor={colors.star}
-                        starSize={16}
-                    />
-
-                    <Text style={styles.textPprice}>{Symbols.euro+product.price.toFixed(2)}</Text>
-                    <Text style={styles.textPtime}>Delivery in {product.deliveryTime} minutes</Text>
-                </View>
-
-                <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", marginLeft: "20%" }} >
-                    <TouchableOpacity onPress={async () => { await this.addItemsToCart(product.id, 1); alert(product.title + ": ADDED TO BASKET") }}>
-                        <Icon name="md-cart" style={{ fontSize: 28 }} />
+                <View style={[styles.item, this.state.itemAdding===product.id ? { backgroundColor: colors.green } : styles.item]}>
+                    <TouchableOpacity onPress={() => { alert("More about the product " + product.title) }}>
+                        <Image source={product.image ? { uri: product.image } : ImgResources.mainLogo} style={styles.itemImage} />
                     </TouchableOpacity>
-                    {/* <TouchableOpacity style={{ marginTop: "10%" }}>
+                    <View style={{ flexDirection: "column", width: "42%" }} >
+                        <Text style={styles.textPname}>{product.title}</Text>
+
+                        <StarRating
+                            disabled={false}
+                            emptyStar={'ios-star-outline'}
+                            fullStar={'ios-star'}
+                            halfStar={'ios-star-half'}
+                            iconSet={'Ionicons'}
+                            maxStars={5}
+                            rating={product.starCount}
+                            // selectedStar={(rating) => this.onStarRatingPress(rating)}
+                            fullStarColor={colors.star}
+                            starSize={16}
+                        />
+
+                        <Text style={styles.textPprice}>{Symbols.euro + product.price.toFixed(2)}</Text>
+                        <Text style={styles.textPtime}>Delivery in {product.deliveryTime} minutes</Text>
+                    </View>
+
+                    <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", marginLeft: "20%" }} >
+                        <TouchableOpacity onPress={async () => { await this.addItemsToCart(product.id, 1); Toast.show("Added "+product.title)}}>
+                            <Icon name="md-cart" style={{ fontSize: 28 }} />
+                        </TouchableOpacity>
+                        {/* <TouchableOpacity style={{ marginTop: "10%" }}>
                         <Text style={styles.textPname}>Details</Text>
                     </TouchableOpacity> */}
+                    </View>
                 </View>
-            </View>
+            </Swipeable>
         );
     }
 
@@ -109,9 +116,9 @@ class CategoryScreen extends Component {
             <View>
                 <PackerHeader go_back={true} {...this.props}></PackerHeader>
                 <View style={styles.store_title_container}>
-                    <Text style={styles.title}> {this.state.store} </Text>
-                    <Image source={{ uri: this.state.categoryImage }} style={{ width: 20, height: 20 }} />
-                    <Text style={styles.title}> {this.state.category}</Text>
+                    <Text style={styles.title}> {this.store.store} </Text>
+                    <Image source={{ uri: this.store.categoryImage }} style={{ width: 20, height: 20 }} />
+                    <Text style={styles.title}> {this.store.category}</Text>
                 </View>
                 {this.products ?
                     // <View>
@@ -120,12 +127,22 @@ class CategoryScreen extends Component {
                         data={this.products}
                         renderItem={({ item }) => <this.Item product={item} />}
                         keyExtractor={item => item.id}
-                        contentContainerStyle={styles.storeListView} />
+                        contentContainerStyle={styles.storeListView}
+                        extraData={this.props} />
                     // </View>
 
                     : <Text>Currently Nothing is available</Text>}
             </View>
         );
+    }
+
+    refresh() {
+        try {
+            console.log("rx", this.state.rx)
+            this.setState({ rx: !this.state.rx })
+        } catch{
+            this.setState({ rx: true })
+        }
     }
 }
 

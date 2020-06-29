@@ -93,6 +93,8 @@ target 'rntpackerr' do
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
+  pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
+
   target 'rntpackerrTests' do
     inherit! :complete
     # Pods for testing
