@@ -122,7 +122,7 @@ export default class OrdersScreen extends Component {
                                 latitude: this.state.storePose.latitude,
                                 longitude: this.state.storePose.longitude,
                                 latitudeDelta: 0.3,
-                                longitudeDelta: 0.0421,
+                                longitudeDelta: 0.421,
                             }}
                         >
                             <Marker
@@ -135,6 +135,7 @@ export default class OrdersScreen extends Component {
                                 title="Store location"
                                 pinColor={colors.star}
                                 image={ImgResources.mapPinImg}
+                                style={{width:50, height: 50}}
                             ></Marker>
                             {/* <MapViewDirections
                                     origin={this.state.storePose}
@@ -210,7 +211,7 @@ export default class OrdersScreen extends Component {
                 alert("can't get your geolocation consider enabling location services ")
                 console.log(error.code, error.message);
             },
-            { enableHighAccuracy: true, timeout: 30000, maximumAge: 20000 }
+            { enableHighAccuracy: false, timeout: 30000, maximumAge: 20000 }
         );
     }
 
