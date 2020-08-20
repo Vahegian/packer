@@ -140,7 +140,7 @@ export default class OrdersScreen extends Component {
                             {/* <MapViewDirections
                                     origin={this.state.storePose}
                                     destination={this.state.pos}
-                                    apikey={"AIzaSyCnKVOKwgFHOFPx_5Y-Ya-qfU2sPX6Usa4"}
+                                    apikey={""}
                                 /> */}
                         </MapView>
                         {/* </View> */}
