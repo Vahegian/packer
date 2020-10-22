@@ -4,10 +4,10 @@ import PackerHeader from '../../header';
 import SqlStorage from '../../logic/sqlStorage';
 import colors from '../../../config/colors';
 import Symbols from '../../../config/symbols';
-import Helpers from '../../logic/helpers'
+import Helpers from '../../logic/helpers';
 
 // to be used in development only
-import storeData from '../../../config/storesMock.json'
+import storeData from '../../../config/storesMock.json';
 
 const FEE = 3.60;
 
@@ -36,6 +36,30 @@ class CartScreen extends Component {
         // this.refresh()
     }
 
+    async postUserNFT(data){
+        const rawResponse = await fetch('http://10.0.2.2:5000/content', {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+    const content = await rawResponse.json();
+
+    }
+
+    createNFT(storeItems){
+        let orderID = (parseInt(Math.random()*10000)).toString()
+        let nft_items = [];
+        for (var item of storeItems){
+            nft_items.push(`${item.category}${item.product}/${item.price}/${item.qty}`)
+        }
+
+        console.log("\n\t\t\t", nft_items, orderID)
+        this.postUserNFT({id:orderID, items:nft_items}).then(()=>{console.log("Posted NFT")})
+        
+    }
     // UI functions 
 
     createOrderButton(storeName, store) {
@@ -43,7 +67,7 @@ class CartScreen extends Component {
         let totalWithFee = FEE+sTotal;
 
         return (
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('bankScreen', {totalPay:totalWithFee, store:{title: storeName, items: store.items, storeID:store.storeID}})}}
+            <TouchableOpacity onPress={() => { this.createNFT(store.items); this.props.navigation.navigate('bankScreen', {totalPay:totalWithFee, store:{title: storeName, items: store.items, storeID:store.storeID}})}}
                 style={{
                     flexDirection: "column",
                     backgroundColor: colors.transparentWhite,
